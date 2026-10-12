@@ -1,0 +1,7 @@
+{
+  "name": "beer-game-ai-proxy",
+  "version": "1.0.0",
+  "description": "Keeps the OpenAI API key server-side. Never commit a real key into this project.",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" }
+}

@@ -1,0 +1,72 @@
+{
+  "project_name": "The Beer Game (AI Experimental)",
+  "git": {
+    "dev_branch": "dev",
+    "test_branch": "test",
+    "live_branch": "main",
+    "push": false,
+    "remote": "origin"
+  },
+  "environments": {
+    "dev": {
+      "url": "",
+      "deploy_cmd": "",
+      "smoke_cmd": "node scripts/rebuild.js --check"
+    },
+    "test": {
+      "url": "twin/site/index.html",
+      "deploy_cmd": "node scripts/make_twin.js",
+      "smoke_cmd": "node scripts/rebuild.js --check",
+      "note": "TEST is the digital twin: the live bundle wired to a sandbox relay and mock AI."
+    },
+    "live": {
+      "url": "https://snowy-voice-53c8.tranphucdang0709.workers.dev/",
+      "deploy_cmd": "echo MANUAL STEP - upload the folder to Cloudflare Workers, or put your wrangler deploy command here",
+      "smoke_cmd": "",
+      "note": "Until a wrangler deploy command is set, go-live only promotes the code on main; you upload it. Then run: node scripts/smoke_url.js <live url>"
+    }
+  },
+  "commands": {
+    "install": "",
+    "test": "node tests/run_all.js",
+    "post_patch": "node scripts/rebuild.js"
+  },
+  "maintenance_tasks": [
+    {
+      "name": "rebuild-bundle",
+      "cmd": "node scripts/rebuild.js",
+      "note": "keeps index.html in sync with source/"
+    },
+    {
+      "name": "health-report",
+      "cmd": "node tests/run_all.js",
+      "note": "read-only full health check"
+    }
+  ],
+  "approval": {
+    "live": "telegram"
+  },
+  "guardrails": {
+    "max_changed_files": 12,
+    "max_diff_lines": 400,
+    "max_fix_attempts": 2,
+    "protected_paths": [
+      ".env",
+      "ai-proxy-server/.env",
+      "secrets/",
+      "ai-maintenance/",
+      ".github/",
+      "tests/"
+    ]
+  },
+  "llm": {
+    "provider": "openai",
+    "api_key_env": "OPENAI_API_KEY",
+    "model_env": "AGENT_MODEL",
+    "default_model": "gpt-4o-mini"
+  },
+  "telegram": {
+    "token_env": "TELEGRAM_BOT_TOKEN",
+    "allowed_chat_ids_env": "TELEGRAM_ALLOWED_CHAT_IDS"
+  }
+}
